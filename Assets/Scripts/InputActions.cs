@@ -46,9 +46,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Confirm"",
+                    ""name"": ""Menu"",
                     ""type"": ""Button"",
-                    ""id"": ""513fda2b-f3d4-499f-b336-2179ab766d09"",
+                    ""id"": ""cee70197-16ef-4f98-ba43-9613e16beb07"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -124,23 +124,12 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""bf709460-8627-4f04-aee0-981d8ae18b2d"",
-                    ""path"": ""<Keyboard>/enter"",
+                    ""id"": ""0540230d-aa43-4d76-963c-c47b6c8710f1"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Confirm"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""2fe4c072-637a-42e5-a467-04fc7bce06cc"",
-                    ""path"": ""<Keyboard>/numpadEnter"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Confirm"",
+                    ""action"": ""Menu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -153,7 +142,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         m_Main = asset.FindActionMap("Main", throwIfNotFound: true);
         m_Main_LeftMove = m_Main.FindAction("Left Move", throwIfNotFound: true);
         m_Main_RightMove = m_Main.FindAction("Right Move", throwIfNotFound: true);
-        m_Main_Confirm = m_Main.FindAction("Confirm", throwIfNotFound: true);
+        m_Main_Menu = m_Main.FindAction("Menu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -215,14 +204,14 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     private IMainActions m_MainActionsCallbackInterface;
     private readonly InputAction m_Main_LeftMove;
     private readonly InputAction m_Main_RightMove;
-    private readonly InputAction m_Main_Confirm;
+    private readonly InputAction m_Main_Menu;
     public struct MainActions
     {
         private @InputActions m_Wrapper;
         public MainActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @LeftMove => m_Wrapper.m_Main_LeftMove;
         public InputAction @RightMove => m_Wrapper.m_Main_RightMove;
-        public InputAction @Confirm => m_Wrapper.m_Main_Confirm;
+        public InputAction @Menu => m_Wrapper.m_Main_Menu;
         public InputActionMap Get() { return m_Wrapper.m_Main; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -238,9 +227,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @RightMove.started -= m_Wrapper.m_MainActionsCallbackInterface.OnRightMove;
                 @RightMove.performed -= m_Wrapper.m_MainActionsCallbackInterface.OnRightMove;
                 @RightMove.canceled -= m_Wrapper.m_MainActionsCallbackInterface.OnRightMove;
-                @Confirm.started -= m_Wrapper.m_MainActionsCallbackInterface.OnConfirm;
-                @Confirm.performed -= m_Wrapper.m_MainActionsCallbackInterface.OnConfirm;
-                @Confirm.canceled -= m_Wrapper.m_MainActionsCallbackInterface.OnConfirm;
+                @Menu.started -= m_Wrapper.m_MainActionsCallbackInterface.OnMenu;
+                @Menu.performed -= m_Wrapper.m_MainActionsCallbackInterface.OnMenu;
+                @Menu.canceled -= m_Wrapper.m_MainActionsCallbackInterface.OnMenu;
             }
             m_Wrapper.m_MainActionsCallbackInterface = instance;
             if (instance != null)
@@ -251,9 +240,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @RightMove.started += instance.OnRightMove;
                 @RightMove.performed += instance.OnRightMove;
                 @RightMove.canceled += instance.OnRightMove;
-                @Confirm.started += instance.OnConfirm;
-                @Confirm.performed += instance.OnConfirm;
-                @Confirm.canceled += instance.OnConfirm;
+                @Menu.started += instance.OnMenu;
+                @Menu.performed += instance.OnMenu;
+                @Menu.canceled += instance.OnMenu;
             }
         }
     }
@@ -262,6 +251,6 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     {
         void OnLeftMove(InputAction.CallbackContext context);
         void OnRightMove(InputAction.CallbackContext context);
-        void OnConfirm(InputAction.CallbackContext context);
+        void OnMenu(InputAction.CallbackContext context);
     }
 }

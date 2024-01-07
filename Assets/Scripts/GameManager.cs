@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
 
                 p2Score++;
                 p2ScoreText.text = "" + p2Score;
-                if (p2Score > 1)
+                if (p2Score > 9)
                     gameOver(2);
             }
 
@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
 
                 p1Score++;
                 p1ScoreText.text = "" + p1Score;
-                if (p1Score > 1)
+                if (p1Score > 9)
                     gameOver(1);
             }
         }
@@ -106,8 +106,8 @@ public class GameManager : MonoBehaviour
         GameObject.Destroy(currentBall);
     }
 
-    public void newGame(int playerCount)
+    public void OnMenu()
     {
-
+        SceneManager.LoadScene("menu");
     }
 }
