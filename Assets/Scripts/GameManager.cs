@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,20 +15,33 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI p2ScoreText;
     [SerializeField] private Canvas gameOverScreen;
     [SerializeField] private TextMeshProUGUI winnerText;
-    [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject leftBumper;
     [SerializeField] private GameObject rightBumper;
     [SerializeField] private GameObject aiBumper;
     private bool isGameOver;
+    [SerializeField] private AudioSource clickSound;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        isGameOver = true;
+        isGameOver = false;
+        scoreBoard.enabled = true;
         gameOverScreen.enabled = false;
-        scoreBoard.enabled = false;
-        mainMenu.SetActive(true);
+
+
+        leftBumper.SetActive(true);
+
+
+        if (aiBumper)
+            aiBumper.SetActive(true);
+        else if (rightBumper)
+            rightBumper.SetActive(true);
+
+
+        currentBall = GameObject.Instantiate(ballPrefab, Vector3.zero, Quaternion.identity);
+        ballPos = currentBall.transform;
+        currentBall.GetComponent<Ball>().Init();
     }
 
     // Update is called once per frame
@@ -44,9 +56,11 @@ public class GameManager : MonoBehaviour
                 ballPos = currentBall.transform;
                 currentBall.GetComponent<Ball>().Init();
 
+                clickSound.Play();
+
                 p2Score++;
                 p2ScoreText.text = "" + p2Score;
-                if (p2Score > 9)
+                if (p2Score > 1)
                     gameOver(2);
             }
 
@@ -57,19 +71,20 @@ public class GameManager : MonoBehaviour
                 ballPos = currentBall.transform;
                 currentBall.GetComponent<Ball>().Init();
 
+                clickSound.Play();
+
                 p1Score++;
                 p1ScoreText.text = "" + p1Score;
-                if (p1Score > 9)
+                if (p1Score > 1)
                     gameOver(1);
             }
         }
         
-        if (isGameOver && !mainMenu.activeSelf)
+        if (isGameOver)
         {
             if (Input.anyKeyDown)
             {
-                mainMenu.SetActive(true);
-                gameOverScreen.enabled = false;
+                SceneManager.LoadScene("Menu");
             }
         }
     }
@@ -78,8 +93,13 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = true;
         leftBumper.SetActive(false);
-        rightBumper.SetActive(false);
-        aiBumper.SetActive(false);
+
+        if (rightBumper)
+            rightBumper.SetActive(false);
+
+        if (aiBumper)
+            aiBumper.SetActive(false);
+
         scoreBoard.enabled = false;
         winnerText.text = "Player " + winner + " wins";
         gameOverScreen.enabled = true;
@@ -88,20 +108,6 @@ public class GameManager : MonoBehaviour
 
     public void newGame(int playerCount)
     {
-        isGameOver = false;
-        scoreBoard.enabled = true;
-        mainMenu.SetActive(false);
 
-
-        leftBumper.SetActive(true);
-        if (playerCount == 1)
-            aiBumper.SetActive(true);
-        else
-            rightBumper.SetActive(true);
-
-
-        currentBall = GameObject.Instantiate(ballPrefab, Vector3.zero, Quaternion.identity);
-        ballPos = currentBall.transform;
-        currentBall.GetComponent<Ball>().Init();
     }
 }

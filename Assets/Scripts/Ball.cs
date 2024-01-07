@@ -7,10 +7,12 @@ public class Ball : MonoBehaviour
     private Vector3 velocity;
     [SerializeField] private Camera mainCamera;
     [SerializeField] float moveSpeed = 2;
+    private AudioSource blip;
 
     public void Init()
     {
         mainCamera = FindObjectOfType<Camera>();
+        blip = GetComponent<AudioSource>();
 
         float x = Random.Range(-1, 1);
         float y = Random.Range(-1, 1);
@@ -40,7 +42,13 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        blip.Play();
         velocity.x = -velocity.x;
         moveSpeed += 0.5f;
+    }
+
+    public Vector2 getDirection()
+    {
+        return velocity.normalized;
     }
 }
